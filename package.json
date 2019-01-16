@@ -1,0 +1,23 @@
+{
+  "name": "http-routing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+     "lint": "eslint .",
+     "pretest": "npm run lint",
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Masmics/http-routing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Masmics/http-routing/issues"
+  },
+  "homepage": "https://github.com/Masmics/http-routing#readme"
+}
