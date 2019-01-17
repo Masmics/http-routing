@@ -3,16 +3,15 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const app = require('../lib/app');
 
-const createPerson = () => {
+const createPerson = name => {
   return request(app)
     .post('/people')
     .send({
-      name: 'Bob',
+      name,
       age: 100,
       favoriteColor: 'blue',
-      //id: createPerson.id //?
     });
-  //.then(res = res.body);
+//    .then(res = res.body);
 };
 
 describe('app tests', () => {
@@ -58,7 +57,7 @@ describe('app tests', () => {
   });
 
   it('gets a person by id', () => {
-    return createPerson('chris')
+    return createPerson('ryan')
       .then(({ _id }) => {
         return Promise.all([
           Promise.resolve(_id),
@@ -67,7 +66,7 @@ describe('app tests', () => {
       })
       .then(([_id, { body }]) => {
         expect(body).toEqual({
-          name: 'chris',
+          name: 'ryan',
           age: 100,
           favoriteColor: 'red',
           _id
