@@ -9,13 +9,13 @@ const createPerson = () => {
     .send({
       name: 'Bob',
       age: 100,
-      favoriteColor: 'blue'
+      favoriteColor: 'blue',
+      //id: createPerson.id //?
     });
   //.then(res = res.body);
 };
 
 describe('app tests', () => {
-
   beforeEach(done => {
     rimraf('./data/people', err => {
       done(err);
@@ -36,32 +36,42 @@ describe('app tests', () => {
       })
       .then(res => {
         expect(res.body).toEqual({
+          _id: expect.any(String),
           name: 'Bob',
           age: 100,
-          favoriteColor: 'blue'
+          favoriteColor: 'blue',
+
         });
       });
   });
+  
   it('gets a list of people from our db', () => {
-    const namesToCreate = ['ryan, ryan1, ryan 2'];
+    const namesToCreate = ['ryan', 'ryan1', 'ryan 2'];
     return Promise.all(namesToCreate.map(createPerson))
       .then(() => {
         return request(app)
           .get('/people');
       })
       .then(({ body }) => {
-        expect(body).toHaveLength(4);
+        expect(body).toHaveLength(3);
       });
   });
 
   it('gets a person by id', () => {
-    return createPerson('ryan')
-      .then(() => {
-        return request(app)
-          .get('/people/id');
+    return createPerson('chris')
+      .then(({ _id }) => {
+        return Promise.all([
+          Promise.resolve(_id),
+          request(app).get(`/people/${_id}`)
+        ]);
       })
-      .then(({ body }) => {
-        expect(body).toHaveLength(1);
+      .then(([_id, { body }]) => {
+        expect(body).toEqual({
+          name: 'chris',
+          age: 100,
+          favoriteColor: 'red',
+          _id
+        });
       });
   });
 });
