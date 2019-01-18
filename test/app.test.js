@@ -9,9 +9,9 @@ const createPerson = name => {
     .send({
       name,
       age: 100,
-      favoriteColor: 'blue',
-    });
-//    .then(res = res.body);
+      favoriteColor: 'red',
+    })
+    .then(res => res.body);
 };
 
 describe('app tests', () => {
@@ -39,7 +39,6 @@ describe('app tests', () => {
           name: 'Bob',
           age: 100,
           favoriteColor: 'blue',
-
         });
       });
   });
@@ -70,6 +69,24 @@ describe('app tests', () => {
           age: 100,
           favoriteColor: 'red',
           _id
+        });
+      });
+  });
+
+  it('updates a person by id and returns the update', () => {
+    return createPerson('ryan') // not update??
+      .then(({ _id }) => {
+        return Promise.all([
+          Promise.resolve(_id),
+          request(app).put(`/people/${_id}`).send({ name: 'ryan', age: 100, favoriteColor: 'plaid' })
+        ]);
+      })
+      .then(([_id, { body }]) => {
+        expect(body).toEqual({
+          _id,
+          name: 'ryan',
+          age: 100,
+          favoriteColor: 'plaid',
         });
       });
   });
